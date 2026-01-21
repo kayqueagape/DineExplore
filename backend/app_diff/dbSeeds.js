@@ -1,6 +1,5 @@
-import e from 'express';
+import app from "./src/app.js"
 
-const app = e();
 const port = 3000;
 
 
