@@ -1,8 +1,8 @@
 const { Sequelize, Model, DataTypes } = require('sequelize');
 const sequelize = new Sequelize('sqlite::memory:');
 
-const User = sequelize.define(
-  'User',
+const user = sequelize.define(
+  'user',
   {
     // Model attributes are defined here
     firstName: {
@@ -20,7 +20,7 @@ const User = sequelize.define(
 );
 
 // `sequelize.define` also returns the model
-console.log(User === sequelize.models.User); // true
+console.log(user === sequelize.models.user); // true
 
 
-export default User;
+export default user;
