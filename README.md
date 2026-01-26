@@ -1,4 +1,4 @@
-#DineExplore 🍽️
+## 🍽️ DineExplore
 
 A sophisticated backend platform for discovering the best local dining experiences. This project leverages geolocation to filter restaurants, integrates real-time community feedback, and features a live chat for user interaction.
 
