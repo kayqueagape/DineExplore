@@ -5,10 +5,8 @@ import 'dotenv/config';
 
 const port = process.env.PORT || 3000;
 
-// Create HTTP server
 const httpServer = createServer(app);
 
-// Initialize Socket.io
 const io = new Server(httpServer, {
   cors: {
     origin: "*",
@@ -16,7 +14,6 @@ const io = new Server(httpServer, {
   }
 });
 
-// Socket.io connection handling
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
 
@@ -47,7 +44,6 @@ io.on("connection", (socket) => {
   });
 });
 
-// Make io available to routes if needed
 app.set("io", io);
 
 httpServer.listen(port, () => {
