@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
-import dotenv from 'dotenv'
-dotenv.config()
+import 'dotenv/config'
 
 class AuthController {
   static async register(req, res) {
