@@ -1,7 +1,5 @@
-import Review from "../models/review.js";
-import Restaurant from "../models/restaurant.js";
-import User from "../models/user.js";
-import { sequelize } from "../db/database.js";
+import {Review, Restaurant, User} from "../models/index.js";
+import { sequelize } from "../config/database.js";
 
 class ReviewController {
   static async createReview(req, res) {
@@ -44,7 +42,7 @@ class ReviewController {
           {
             model: User,
             as: 'user',
-            attributes: ['id', 'firstName', 'lastName', 'avatar']
+            attributes: ['id', 'name', 'avatar']
           },
           {
             model: Restaurant,
@@ -94,7 +92,7 @@ class ReviewController {
           {
             model: User,
             as: 'user',
-            attributes: ['id', 'firstName', 'lastName', 'avatar']
+            attributes: ['id', 'name', 'avatar']
           },
           {
             model: Restaurant,
@@ -145,7 +143,7 @@ class ReviewController {
         include: [{
           model: User,
           as: 'user',
-          attributes: ['id', 'firstName', 'lastName', 'avatar']
+          attributes: ['id', 'name', 'avatar']
         }],
         order: [['createdAt', 'DESC']]
       });

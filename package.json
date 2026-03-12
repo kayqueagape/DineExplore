@@ -4,8 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./server.js",
-    "start": "node ./server.js",
+    "dev": "nodemon ./dbSeeds.js",
+    "start": "node ./dbSeeds.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,14 +13,18 @@
   "license": "ISC",
   "description": "DineExplore Backend API",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.x.x",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.11",
     "pg": "^8.17.2",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "uuid": "^11.x.x"
   }
 }

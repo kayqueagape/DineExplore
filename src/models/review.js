@@ -1,49 +1,44 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../db/database.js";
+import { sequelize } from "../config/database.js";
+import bcrypt from "bcrypt";
 
-const Review = sequelize.define('Review', {
+const User = sequelize.define('User', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true
   },
-  rating: {
-    type: DataTypes.INTEGER,
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {  
+    type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
     validate: {
-      min: 1,
-      max: 5
+      isEmail: true
     }
   },
-  comment: {
-    type: DataTypes.TEXT,
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    set(value) {
+      const hashedPassword = bcrypt.hashSync(value, 10);
+      this.setDataValue('password', hashedPassword);
+    }
+  },
+  avatar: {
+    type: DataTypes.STRING,
     allowNull: true
-  },
-  userId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id'
-    }
-  },
-  restaurantId: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'restaurants',
-      key: 'id'
-    }
   }
 }, {
   timestamps: true,
-  tableName: 'reviews',
-  indexes: [
-    {
-      unique: true,
-      fields: ['userId', 'restaurantId']
-    }
-  ]
+  tableName: 'users'
 });
 
-export default Review;
+User.prototype.checkPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+export default User;

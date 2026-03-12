@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-import User from "../models/user.js";
-import 'dotenv/config'
+import {User} from "../models/index.js";
+import dotenv from 'dotenv'
+dotenv.config()
 
 class AuthController {
   static async register(req, res) {
@@ -86,7 +87,7 @@ class AuthController {
   static async getProfile(req, res) {
     try {
       const user = await User.findByPk(req.user.id, {
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['password', 'email'] }
       });
 
       if (!user) {

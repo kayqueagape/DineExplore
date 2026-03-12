@@ -1,10 +1,10 @@
-import User from "../models/user.js";
+import {User} from "../models/index.js";
 
 class UserController {
   static async getAllUsers(req, res) {
     try {
       const users = await User.findAll({
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['password', 'email'] }
       });
       res.status(200).json(users);
     } catch (error) {
@@ -16,7 +16,7 @@ class UserController {
     try {
       const { id } = req.params;
       const user = await User.findByPk(id, {
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['password', 'email'] }
       });
 
       if (!user) {
