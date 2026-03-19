@@ -37,7 +37,6 @@ const User = sequelize.define('User', {
   tableName: 'users'
 });
 
-
 User.prototype.checkPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };

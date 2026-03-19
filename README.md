@@ -1,127 +1,234 @@
-# DineExplore — Backend API
+<div align="center">
 
-Backend API para a plataforma DineExplore, construída com Node.js, Express, Sequelize e PostgreSQL.
+# 🍽️ DineExplore — Backend API
 
-**Resumo:** esta API oferece autenticação JWT, CRUD de restaurantes, sistema de avaliações, filtros por localização/cuisine/nota e endpoints para usuários e reviews.
+**A powerful REST API for restaurant discovery, reviews, and geolocation-based search.**
 
-**Principais features**
-- Autenticação com JWT
-- CRUD completo de restaurantes
-- Sistema de reviews (avaliações e comentários)
-- Filtros por geolocalização, tipo de cozinha e nota mínima
-- Arquitetura pronta para rodar com Docker / docker-compose
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Sequelize-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![JWT](https://img.shields.io/badge/Auth-JWT-FB015B?style=for-the-badge&logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
 
-**Este repositório contém**
-- `server.js` / `src/app.js`: ponto de entrada
-- `src/models`: modelos Sequelize (`user`, `restaurant`, `review`)
-- `src/controllers`: controladores por recurso
-- `src/routes`: rotas agrupadas por recurso
+---
 
-## 📋 Requisitos
-- Node.js 18+ (recomendado)
-- PostgreSQL (local ou em container)
-- npm ou yarn
-- Docker & Docker Compose (opcional, recomendado para produção/local consistente)
+### 🌐 [Live Demo →](https://templete-dinner.onrender.com/) &nbsp;|&nbsp; 💻 [Frontend Repository →](https://github.com/kayqueagape/templete-dinner)
 
-## ⚙️ Variáveis de ambiente
-Crie um arquivo `.env` na raiz com pelo menos as variáveis abaixo:
 
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Live Demo & Frontend](#-live-demo--frontend)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Running with Docker](#-running-with-docker)
+- [API Reference](#-api-reference)
+- [Project Structure](#-project-structure)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🗺️ Overview
+
+DineExplore is a full-featured backend API that powers a restaurant discovery platform. It handles user authentication, restaurant management, reviews, and location-based filtering — giving users a seamless experience finding great places to eat.
+
+---
+
+## ✨ Features
+
+- 🔐 **JWT Authentication** — Secure register, login, and profile endpoints
+- 🍴 **Restaurant Management** — Full CRUD operations for restaurant listings
+- ⭐ **Reviews & Ratings** — Create and list reviews with aggregated rating scores
+- 📍 **Geolocation Filtering** — Search restaurants by coordinates and radius
+- 🔍 **Search & Filters** — Filter by cuisine type, minimum rating, and keyword
+- 🐳 **Docker Ready** — Dockerfile and docker-compose for painless deployment
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Runtime | Node.js 18+ |
+| Framework | Express.js |
+| ORM | Sequelize |
+| Database | PostgreSQL |
+| Auth | JSON Web Tokens (JWT) |
+| DevOps | Docker & Docker Compose |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js 18+](https://nodejs.org/)
+- [PostgreSQL](https://www.postgresql.org/) (local or via container)
+- [Docker & Docker Compose](https://www.docker.com/) *(optional, but recommended)*
+- npm or yarn
+
+### Installation
+
+**1. Clone the repository:**
+
+```bash
+git clone https://github.com/your-username/dineexplore-backend.git
+cd dineexplore-backend
 ```
-DATABASE=postgres://USER:PASS@HOST:PORT/DBNAME
-JWT_SECRET=uma_chave_super_secreta
-PORT=3000
-```
 
-Observações:
-- `DATABASE` pode ser uma URL de conexão do Postgres (ex.: `postgres://user:pass@localhost:5432/dineexplore`).
-- Ajuste `PORT` se necessário.
-
-## 🧭 Execução local (desenvolvimento)
-1. Instale dependências:
+**2. Install dependencies:**
 
 ```bash
 npm install
 ```
 
-2. Configure o `.env` conforme acima.
+**3. Configure environment variables** *(see section below)*
 
-3. Inicie o servidor em modo de desenvolvimento:
+**4. Start the development server:**
 
 ```bash
 npm run dev
 ```
 
-Ou iniciar diretamente:
+The API will be available at `http://localhost:3000`.
 
-```bash
-node server.js
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+# Database connection string
+DATABASE=postgres://USER:PASS@HOST:PORT/DBNAME
+
+# JWT secret key (use a long, random string in production)
+JWT_SECRET=your_super_secret_jwt_key
+
+# Server port
+PORT=3000
+
+# Cloudflare R2 Storage
+R2_ACCOUNT_ID=your_account_id
+R2_ACCESS_KEY_ID=your_access_key_id
+R2_SECRET_ACCESS_KEY=your_secret_access_key
+R2_BUCKET_NAME=your_bucket_name
+R2_PUBLIC_URL=your_r2_public_url
 ```
 
-O servidor por padrão fica em `http://localhost:3000` (ou na porta definida em `PORT`).
+> 💡 **Example:** `DATABASE=postgres://admin:password@localhost:5432/dineexplore`
 
-## 🐳 Rodando com Docker
-O repositório já inclui um `Dockerfile` e `docker-compose.yml`. Abaixo instruções para usar ambos.
+> ☁️ **R2:** The Cloudflare R2 variables are required for file upload functionality (restaurant images, etc.). You can find these credentials in your [Cloudflare R2 dashboard](https://dash.cloudflare.com/).
 
-1) Build e run com Docker (imagem única):
+---
 
-```bash
-docker build -t dineexplore-backend .
-docker run -e DATABASE="postgres://user:pass@host:5432/db" -e JWT_SECRET="segredo" -p 3000:3000 dineexplore-backend
-```
+## 🐳 Running with Docker
 
-2) Usando `docker-compose` (recomendado para dev):
+Docker Compose is the recommended way to run the full stack locally (app + database together).
+
+**Start everything with one command:**
 
 ```bash
 docker-compose up --build
 ```
 
-Isso deve subir os serviços definidos em `docker-compose.yml` (por exemplo, app + banco Postgres). Verifique os serviços e variáveis no arquivo `docker-compose.yml` antes de rodar.
+**Or build and run the image manually:**
 
-Dicas:
-- Se usar compose com um banco Postgres novo, verifique as variáveis `POSTGRES_USER`, `POSTGRES_PASSWORD` e `POSTGRES_DB` na configuração.
-- Pode ser necessário aguardar o banco ficar disponível; a aplicação tentará conectar usando a string em `DATABASE`.
+```bash
+docker build -t dineexplore-backend .
+docker run \
+  -e DATABASE="postgres://user:pass@host:5432/dineexplore" \
+  -e JWT_SECRET="your_secret" \
+  -p 3000:3000 \
+  dineexplore-backend
+```
 
-## 📦 Scripts úteis
-- `npm run dev` — modo desenvolvimento (com nodemon, se configurado)
-- `npm start` — iniciar aplicação (produção)
+> ⚠️ On first startup, the app may need a few seconds to wait for the database to be ready. Check `docker-compose.yml` for Postgres credentials (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`).
 
-Verifique `package.json` para scripts exatos.
+---
 
-## 🧩 Endpoints principais
-Base: `/api`
+## 📡 API Reference
 
-- Auth
-  - `POST /api/auth/register` — registrar usuário
-  - `POST /api/auth/login` — autenticar e receber JWT
-  - `GET /api/auth/profile` — perfil do usuário (autenticado)
+**Base URL:** `/api`
 
-- Restaurants
-  - `GET /api/restaurants` — listar restaurantes
-    - Query params opcionais: `latitude`, `longitude`, `radius`, `cuisine`, `minRating`, `search`
-  - `GET /api/restaurants/:id` — detalhes
-  - `POST /api/restaurants` — criar restaurante (requer autenticação/roles conforme implementação)
-  - `PUT /api/restaurants/:id` — atualizar
-  - `DELETE /api/restaurants/:id` — remover
+### 🔐 Authentication
 
-- Reviews
-  - `POST /api/restaurants/:id/reviews` — criar review para restaurante
-  - `GET /api/restaurants/:id/reviews` — listar reviews do restaurante
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | Register a new user | ❌ |
+| `POST` | `/api/auth/login` | Login and receive a JWT token | ❌ |
+| `GET` | `/api/auth/profile` | Get the authenticated user's profile | ✅ |
 
-- Users
-  - `GET /api/users/:id` — obter dados do usuário
+### 🍴 Restaurants
 
-Consulte os controladores em `src/controllers` para detalhes sobre validação e body esperado.
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/api/restaurants` | List restaurants (with filters) | ❌ |
+| `GET` | `/api/restaurants/:id` | Get restaurant details | ❌ |
+| `POST` | `/api/restaurants` | Create a new restaurant | ✅ |
+| `PUT` | `/api/restaurants/:id` | Update a restaurant | ✅ |
+| `DELETE` | `/api/restaurants/:id` | Delete a restaurant | ✅ |
 
-## 🔍 Estrutura do projeto
+**Available query params for `GET /api/restaurants`:**
+
+| Param | Type | Description |
+|---|---|---|
+| `latitude` | `number` | User's latitude for geo-filtering |
+| `longitude` | `number` | User's longitude for geo-filtering |
+| `radius` | `number` | Search radius (in km/miles) |
+| `cuisine` | `string` | Filter by cuisine type |
+| `minRating` | `number` | Minimum average rating (e.g. `4`) |
+| `search` | `string` | Keyword search by name or description |
+
+### ⭐ Reviews
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| `POST` | `/api/restaurants/:id/reviews` | Create a review for a restaurant | ✅ |
+| `GET` | `/api/restaurants/:id/reviews` | List all reviews for a restaurant | ❌ |
+
+### 👤 Users
+
+| Method | Endpoint | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/api/users/:id` | Get user data by ID | ✅ |
+
+---
+
+## 📁 Project Structure
 
 ```
-src/
-  app.js
-  controllers/
-  db/
-  middleware/
-  models/
-  routes/
-README.md
-server.js
+dineexplore-backend/
+│
+├── server.js                   # Entry point (production)
+├── docker-compose.yml
+├── Dockerfile
+├── .env.example
+│
+└── src/
+    ├── app.js                  # Express app setup
+    ├── config/
+    │   ├── database.js         # Sequelize / DB configuration
+    │   └── r2client.js         # Cloud storage client (optional)
+    ├── controllers/            # Route handlers per resource
+    ├── middleware/
+    │   ├── auth.js             # JWT authentication middleware
+    │   └── upload.js           # File upload middleware
+    ├── models/                 # Sequelize models (User, Restaurant, Review)
+    └── routes/                 # Express route definitions
 ```
+
+---
+
+## 📄 License
+
+This project is licensed under the terms found in the [LICENSE](./LICENSE) file.
+
+---
